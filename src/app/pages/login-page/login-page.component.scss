@@ -3,10 +3,35 @@
     height: 100vh;
     background-color: rgb(36, 33, 43);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+.sign-up-part,.login-part{
+    width: 25%;
+    height: 300px;
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-.login-form-container{
-    width: 30%;
+}
+.sign-up-part{
+    border-left: solid 1px rgb(59, 59, 59);
+}
+.forms-container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.title{
+    color: white;
+    text-transform: uppercase;
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+h2{
+    color: white;
+    text-align: center;
 }

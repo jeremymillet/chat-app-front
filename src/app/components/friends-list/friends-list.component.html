@@ -1,0 +1,5 @@
+<div class="friends-list" *ngFor="let friend of friends">
+    <app-friend-component  [friend]="friend"></app-friend-component>
+    <p *ngif="friends.lenght <= 0">No friends</p>
+</div>
+

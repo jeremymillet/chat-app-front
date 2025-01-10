@@ -1,0 +1,33 @@
+<form nz-form [formGroup]="validateSignUpForm" class="sign-up-form" (ngSubmit)="submitSignUpForm()">
+    <nz-form-item>
+    <nz-form-control [nzValidateStatus]="validateSignUpForm.controls['email']"
+      [nzErrorTip]="getEmailError()">
+        <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="email" placeholder="Email" />
+        </nz-input-group>
+    </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+    <nz-form-control [nzValidateStatus]="validateSignUpForm.controls['username']"
+      [nzErrorTip]="getUsernameError()">
+        <nz-input-group nzPrefixIcon="lock">
+        <input type="text" nz-input formControlName="username" placeholder="Username" />
+        </nz-input-group>
+    </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+    <nz-form-control [nzValidateStatus]="validateSignUpForm.controls['password']"
+      [nzErrorTip]="getPasswordError()">
+        <nz-input-group nzPrefixIcon="lock">
+        <input type="password" nz-input formControlName="password" placeholder="Password" />
+        </nz-input-group>
+    </nz-form-control>
+    </nz-form-item>
+    <div nz-row class="sign-up-form-margin">
+    </div>
+    <button nz-button [disabled]="validateSignUpForm.invalid" class="sign-up-form-button sign-up-form-margin" [nzType]="'primary'">Sign up</button>
+    <nz-spin *ngIf="isLoadingSignUp$ | async"></nz-spin>
+    <div *ngIf="errorSignUp$ | async as error" class="error-message">
+      {{ error }}
+    </div>
+</form>

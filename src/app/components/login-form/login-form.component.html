@@ -1,0 +1,25 @@
+<form nz-form [formGroup]="validateLoginForm" class="login-form" (ngSubmit)="submitLoginForm()">
+    <nz-form-item>
+    <nz-form-control [nzValidateStatus]="validateLoginForm.controls['email']"
+      [nzErrorTip]="getEmailError()">
+        <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="email" placeholder="Email" />
+        </nz-input-group>
+    </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+    <nz-form-control [nzValidateStatus]="validateLoginForm.controls['password']"
+      [nzErrorTip]="getPasswordError()">
+        <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Password" />
+        </nz-input-group>
+    </nz-form-control>
+    </nz-form-item>
+    <div nz-row class="login-form-margin">
+    </div>
+    <button nz-button [disabled]="validateLoginForm.invalid" class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+    <nz-spin *ngIf="isLoadingLogin$ | async"></nz-spin>
+    <div *ngIf="errorLogin$ | async as error" class="error-message">
+      {{ error }}
+    </div>
+</form>
