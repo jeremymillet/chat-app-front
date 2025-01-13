@@ -1,9 +1,69 @@
+p{
+    margin:0px;
+    color:white;
+}
 .home-page-container{
     width: 100%;
     height: 100vh;
-    background-color: rgb(36, 33, 43);
+    background-color: rgba(49,51,56,255);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.sidebar{
+    width: 15%;
+    height: 100vh;
+    background-color: #2b2d31;
+    .conversations{
+        padding: 10px 20px 0px 20px;
+        height: 90vh;
+        background-color: rgba(43,45,49,255);
+        p{
+            margin-bottom: 20px;
+        }
+    }
+    
+}
+.friends-part{
+    width: 85%;
+    height: 100vh;
+    padding: 0px 40px;
+}
+.friends-filter-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    column-gap: 20px;
+    width: 100%;
+    border-bottom: solid 1px grey;
+    .friends-title{
+        color: white;
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        p{
+            margin: 0px;
+            font-weight: 500;
+            
+        }
+    }
+    .friends-filter{
+        display: flex;
+        column-gap: 20px;
+        button{
+            background-color: transparent;
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 5px;
+            padding: 2px 10px;
+            cursor: pointer;
+        }
+        .friends-filter-btn:hover{
+            background-color: #43444b;
+        }
+        .add-friend-btn{
+            background-color: rgba(36,128,69,255);
+        }
+    }
 }
