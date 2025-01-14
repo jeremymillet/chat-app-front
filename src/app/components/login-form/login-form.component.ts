@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
@@ -16,7 +15,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
-  imports: [ReactiveFormsModule,CommonModule, NzButtonModule, NzCheckboxModule, NzFormModule, NzInputModule,NzSpinModule],
+  imports: [ReactiveFormsModule,CommonModule, NzButtonModule, NzFormModule, NzInputModule,NzSpinModule],
   templateUrl: "./login-form.component.html",
   styleUrl: './login-form.component.scss'
 })
@@ -54,7 +53,8 @@ export class LoginComponent {
     const loginRequest: LoginResquest = { email: this.validateLoginForm.value.email, password: this.validateLoginForm.value.password }
      this.authService.postLogin(loginRequest).subscribe({
     next: (response) => {
-      console.log('Connexion réussie : ', response);
+         console.log('Connexion réussie : ', response);
+        this.authService.setUser(response.user);
         this.authService.setToken(response.accessToken);
         this.router.navigateByUrl(`/home/${response.user.id}`);
          

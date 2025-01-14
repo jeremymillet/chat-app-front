@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, catchError, finalize, Observable, throwError } from 'rxjs';
-import { LoginResponse, LoginResquest, SignUpRequest} from '../types/types';
+import { LoginResponse, LoginResquest, SignUpRequest, User} from '../types/types';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private userSubject = new BehaviorSubject<User | null>(null);
+  public user$ = this.userSubject.asObservable();
+  private tokenSubject = new BehaviorSubject<string>("");
+  public token$ = this.tokenSubject.asObservable();
+
   private isLoadingLoginSubject = new BehaviorSubject<boolean>(false);
   private errorLoginSubject = new BehaviorSubject<string | null>(null);
 
@@ -57,10 +62,19 @@ export class AuthService {
 }
 
   setToken(token: string) {
-    localStorage.setItem('accessToken', token);
+    this.tokenSubject.next(token);
+    localStorage.setItem('accessToken',token);
   }
 
   clearToken() {
     localStorage.removeItem('accessToken');
+    this.tokenSubject.next("");
+  }
+  setUser(user: User): void {
+    this.userSubject.next(user);
+  }
+
+  getUser(): User | null {
+    return this.userSubject.value;
   }
 }

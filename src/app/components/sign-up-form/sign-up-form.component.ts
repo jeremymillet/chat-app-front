@@ -44,14 +44,14 @@ export class SignUpFormComponent {
   
   submitSignUpForm(): void {
     const signUpRequest: SignUpRequest = { email: this.validateSignUpForm.value.email, password: this.validateSignUpForm.value.password, username: this.validateSignUpForm.value.username}
-         this.authService.postSignUp(signUpRequest).subscribe({
-        next: (response) => {
-             console.log('Inscription réussie : ', response);
-             alert("Inscription réussie")
-        },
-        error: (err) => {
-          console.error("Erreur lors de l'inscription", err);
-        },
-      });
+    this.authService.postSignUp(signUpRequest).subscribe({
+    next: (response) => {
+          console.log('Inscription réussie : ', response);
+          alert("Inscription réussie")
+    },
+    error: (err) => {
+      console.error("Erreur lors de l'inscription", err);
+    },
+  });
   }
 }

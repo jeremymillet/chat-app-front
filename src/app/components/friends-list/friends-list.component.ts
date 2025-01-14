@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FriendComponent } from '../friend/friend-component.component';
 import { CommonModule } from '@angular/common';
+import { Friend } from '../../types/types';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -10,9 +12,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './friends-list.component.scss'
 })
 export class FriendsListComponent {
-  friends = [
-    { name: 'Alice'},
-    { name: 'Bob'},
-    { name: 'Charlie'}
-  ];
+  @Input() filtredFriends$?: Observable<Friend[] | null>;
 }

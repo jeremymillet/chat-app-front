@@ -1,0 +1,13 @@
+<nz-modal [(nzVisible)]="isVisible" nzTitle="ADD Friends" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="validateFriendForm" class="login-form" (ngSubmit)="handleOk()">
+        <nz-form-item>
+          <nz-form-control [nzValidateStatus]="validateFriendForm.controls['id']"[nzErrorTip]="getIdError()">
+          <nz-input-group nzPrefixIcon="lock">
+              <input type="number" nz-input formControlName="id" placeholder="Friend Id" />
+          </nz-input-group>
+        </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+</nz-modal>

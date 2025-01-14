@@ -6,7 +6,7 @@
                 <app-min-profile-card [mp]="true"></app-min-profile-card>
             </div>
         </div>
-        <app-min-profile-card></app-min-profile-card>
+        <app-min-profile-card [user]="user$"></app-min-profile-card>
     </div>
     <div class="friends-part">
         <div class="friends-filter-container">
@@ -21,11 +21,16 @@
             <div class="friends-filter">
                 <button class="friends-filter-btn">Tous</button>
                 <button class="friends-filter-btn">En attente</button>
-                <button class="add-friend-btn">Ajouter</button>
+                <button class="add-friend-btn" (click)="showModal()">Ajouter</button>
             </div>
         </div>
+        <app-friend-request-modal [isVisible]="isVisible" (closeModal)="handleModalClose()"></app-friend-request-modal>
         <app-search-friend-input></app-search-friend-input>
-        <app-friends-list></app-friends-list>
+        <app-friends-list class="test" [filtredFriends$]="friendsSearchFiltered$"></app-friends-list>
+        <div *ngIf="errorFriends$| async as error" class="error-message">
+            {{ error }}
+        </div>
+        <nz-spin *ngIf="isLoadingFriends$ | async"></nz-spin>
     </div>
 </div>
 

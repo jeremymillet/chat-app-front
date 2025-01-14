@@ -2,12 +2,14 @@ export interface User{
     id: number;
     username: string;
     email: string;
+    createdAt: string;
 }
 
-export interface Friends{
+export interface Friend{
     friendshipId: number;
     friendId: number;
-    friendName:string;
+    friendName: string;
+    createdAt: string;
 }
 
 export interface Conversation { 

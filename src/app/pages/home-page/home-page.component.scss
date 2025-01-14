@@ -28,6 +28,10 @@ p{
     width: 85%;
     height: 100vh;
     padding: 0px 40px;
+    .test{
+        display: flex;
+        width: 100%;
+    }
 }
 .friends-filter-container{
     padding: 10px;
@@ -67,3 +71,4 @@ p{
         }
     }
 }
+
