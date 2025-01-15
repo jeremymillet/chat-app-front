@@ -1,7 +1,9 @@
 <div class="friends-list-container" *ngIf="filtredFriends$ | async as friendsList">
-  <div *ngFor="let friend of friendsList" class="friends-list">
-    <app-friend-component [friend]="friend"></app-friend-component>
+  <div  class="friends-list" *ngIf="friendsList.length > 0 && (user| async) as user">
+    <app-friend-component *ngFor="let friend of friendsList" [userId]="user.id" [friend]="friend"></app-friend-component>
   </div>
-  <p *ngIf="friendsList.length === 0">No friends</p>
+  @if(friendsList.length === 0){
+    <p>No friends</p>
+  }
 </div>
 

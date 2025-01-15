@@ -24,7 +24,9 @@ export class HomePageComponent {
   errorFriends$!: Observable<string | null>;
   user$!: Observable<User | null>;
   token$!: Observable<string | null>
-  friendsSearchFiltered$!: Observable<Friend[]|null>
+  filteredFriends$: Observable<Friend[]>;
+  filterType$: Observable<string | null>
+
    constructor(
     private friendServices: friendService,
     private authService: AuthService
@@ -33,7 +35,9 @@ export class HomePageComponent {
     this.errorFriends$ = this.friendServices.errorFriends$;
     this.user$ = this.authService.user$;
     this.token$ = this.authService.token$;
-    this.friendsSearchFiltered$ = this.friendServices.friendsSearchFiltered$;
+     this.filteredFriends$ = this.friendServices.filteredFriends$;
+     this.filterType$ = this.friendServices.filterType$
+    
 
     // Souscription pour récupérer l'utilisateur et charger ses amis
      this.user$.subscribe((user) => {
@@ -50,7 +54,7 @@ export class HomePageComponent {
         });
       }
        })
-    });
+     });
   }
    showModal(): void {
     this.isVisible = true; // Affiche le modal
@@ -58,6 +62,10 @@ export class HomePageComponent {
 
   handleModalClose(): void {
     this.isVisible = false; // Ferme le modal
+  }
+  
+  setFilter(filterType: 'all' | 'pending'): void {
+    this.friendServices.setFilterType(filterType);
   }
 }
 

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FriendComponent } from '../friend/friend-component.component';
 import { CommonModule } from '@angular/common';
-import { Friend } from '../../types/types';
+import { Friend, User } from '../../types/types';
 import { Observable } from 'rxjs';
 
 
@@ -13,4 +13,5 @@ import { Observable } from 'rxjs';
 })
 export class FriendsListComponent {
   @Input() filtredFriends$?: Observable<Friend[] | null>;
+  @Input() user?: Observable<User | null>;
 }

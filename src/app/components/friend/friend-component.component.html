@@ -6,14 +6,36 @@
         </div>
         <div class="friend-username-container">
             <h3 class="friend-username">{{friend.friendName}}</h3>
+            @if(!friend.isAccepted){
+                <p>en attente</p>
+            }
         </div>
     </div>
     <div class="friend-btn-container">
-        <button class="friend-btn">
-            
-        </button>
-        <button class="friend-btn">
-            
-        </button>
+        @if (!friend.isAccepted && friend.requestSenderId !== userId) {
+            <button class="friend-btn" (click)="accepteFriendrequest()">
+                <nz-icon nzType="check" nzTheme="outline" />
+            </button>
+        }
+        @else if(friend.isAccepted){
+            <button class="friend-btn">
+                <nz-icon nzType="message" nzTheme="outline" />
+            </button>
+            <button class="friend-btn" (click)="isVisible = true">
+                <nz-icon nzType="more" nzTheme="outline" />
+            </button>
+            <div class="friend-more-modale" [ngClass]="{'visible': isVisible === true}">
+                <p
+                    nz-popconfirm
+                    nzPopconfirmTitle="Are you sure delete this friend?"
+                    nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="confirm()"
+                    (nzOnCancel)="cancel()"
+                >
+                    Delete
+                </p>
+            </div>
+        }
     </div>
+    
 </div>

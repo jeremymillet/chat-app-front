@@ -21,12 +21,30 @@
         display: flex;
         column-gap: 10px;
         .friend-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-color:rgba(43,45,49,255);
-            width: 25px;
-            height: 25px;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
             border :none;
             border-radius: 50%;
         }
+        .friend-more-modale{
+            display: none;
+        }
+        .friend-more-modale.visible{
+            display: flex;
+            position: absolute;
+            top: 15vh;
+            width: 100px;
+            height:200px;
+            background-color: rgb(44, 44, 44);
+            border-radius: 5px;
+
+        }
+        
     }
     
 }

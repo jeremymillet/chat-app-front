@@ -8,8 +8,10 @@ export interface User{
 export interface Friend{
     friendshipId: number;
     friendId: number;
+    requestSenderId: number;
     friendName: string;
     createdAt: string;
+    isAccepted: boolean;
 }
 
 export interface Conversation { 

@@ -14,13 +14,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './search-friend-input.component.scss'
 })
 export class SearchFriendInputComponent {
-  friends$!: Observable<Friend[] | null>;
   searchTerm: string = '';
   
   constructor(private friendServices: friendService) { }
   
-  onSearch(): void {
-    this.friendServices.filterFriends(this.searchTerm);
+  onSearch(searchTerm: string): void {
+    this.friendServices.setSearchTerm(searchTerm);
   }
 }
 
