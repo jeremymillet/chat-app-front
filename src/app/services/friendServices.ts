@@ -67,6 +67,19 @@ export class friendService{
         })
     );
   }
+  getFriend(userId: number,friendshipId : number, token: string) {
+    return this.http.get<Friend>(`http://localhost:8080/friends/${userId}/friend/${friendshipId}`, {
+        headers: {
+            'Authorization': 'Bearer '+ token,
+            'Content-Type': 'application/json'
+        }
+    }).pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error("Erreur lors de la récupération de l'ami", error.error);
+          return throwError(() => new Error(error.message)); 
+        })
+    );
+  }
   
   addFriend(userId: number, friendId: number, token: string): Observable<any> {
     this.isLoadingFriendsRequestSubject.next(true);

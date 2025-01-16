@@ -1,1 +1,29 @@
-<p>conversation-page works!</p>
+<div class="conversation-page-container">
+    <app-conversation-side-bar class="sidebar" [user$]="user$"></app-conversation-side-bar>
+    <div class="conversation-part">
+        <app-conversation [friend]="friend"></app-conversation>
+    </div>
+    <div>
+        <div>
+            <div></div>
+            <img src="" alt="">
+        </div>
+        <div>
+            <div>
+                <p>{{friend.friendName}}</p>
+                <p>{{friend.friendId}}</p>
+            </div>
+            <div>
+                <div>
+                    <p>a propos</p>
+                    <p></p>
+                </div>
+                <div>
+                    <p>membre depuis</p>
+                    <p>{{friend.createdAt}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

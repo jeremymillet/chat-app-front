@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { MinProfileCardComponent } from '../components/min-profile-card/min-profile-card.component';
-import { Friend, User } from '../types/types';
+import { MinProfileCardComponent } from '../min-profile-card/min-profile-card.component';
+import { Friend, User } from '../../types/types';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/authServices';
-import { friendService } from '../services/friendServices';
+import { AuthService } from '../../services/authServices';
+import { friendService } from '../../services/friendServices';
 import { CommonModule } from '@angular/common';
 
 @Component({

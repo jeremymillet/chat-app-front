@@ -9,7 +9,7 @@ import { AuthService } from '../../services/authServices';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { CommonModule } from '@angular/common';
 import { FriendRequestModalComponent } from '../../components/friend-request-modal/friend-request-modal.component';
-import { ConversationSideBarComponent } from '../../conversation-side-bar/conversation-side-bar.component';
+import { ConversationSideBarComponent } from '../../components/conversation-side-bar/conversation-side-bar.component';
 
 @Component({
   selector: 'app-home-page',
