@@ -18,13 +18,14 @@
             </button>
         }
         @else if(friend.isAccepted){
-            <button class="friend-btn">
+            <button class="friend-btn" (click)="handleMessageBtn()">
                 <nz-icon nzType="message" nzTheme="outline" />
             </button>
-            <button class="friend-btn" (click)="isVisible = true">
+            <button class="friend-btn" (click)="isVisible = !isVisible">
                 <nz-icon nzType="more" nzTheme="outline" />
             </button>
-            <div class="friend-more-modale" [ngClass]="{'visible': isVisible === true}">
+            <div class="friend-more-modale-container">
+                <div class="friend-more-modale" (click)="onModalClick($event)" [ngClass]="{'visible': isVisible === true}">
                 <p
                     nz-popconfirm
                     nzPopconfirmTitle="Are you sure delete this friend?"
@@ -34,6 +35,7 @@
                 >
                     Delete
                 </p>
+            </div>
             </div>
         }
     </div>

@@ -1,13 +1,5 @@
 <div class="home-page-container">
-    <div class="sidebar">
-        <div class="conversations">
-            <p>Message Privés</p>
-            <div>
-                <app-min-profile-card [mp]="true"></app-min-profile-card>
-            </div>
-        </div>
-        <app-min-profile-card [user]="user$"></app-min-profile-card>
-    </div>
+    <app-conversation-side-bar class="sidebar" [user$]="user$"></app-conversation-side-bar>
     <div class="friends-part">
         <div class="friends-filter-container">
             <div class="friends-title">

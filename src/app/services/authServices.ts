@@ -13,12 +13,6 @@ export class AuthService {
   private tokenSubject = new BehaviorSubject<string>("");
   public token$ = this.tokenSubject.asObservable();
 
-  private isLoadingLoginSubject = new BehaviorSubject<boolean>(false);
-  private errorLoginSubject = new BehaviorSubject<string | null>(null);
-
-  isLoadingLogin$ = this.isLoadingLoginSubject.asObservable();
-  errorLogin$ = this.errorLoginSubject.asObservable();
-
   private isLoadingSignUpSubject = new BehaviorSubject<boolean>(false);
   private errorSignUpSubject = new BehaviorSubject<string | null>(null);
 
@@ -29,19 +23,12 @@ export class AuthService {
 
   postLogin(data: LoginResquest): Observable<LoginResponse> {
   
-  this.isLoadingLoginSubject.next(true);
-  this.errorLoginSubject.next(null);
 
   return this.http.post<LoginResponse>('http://localhost:8080/auth/login', data).pipe(
     catchError((error: HttpErrorResponse) => {
-      console.error('Erreur lors de la connexion', error.error);
-      this.errorLoginSubject.next(error.error || 'Une erreur est survenue'); 
+      console.error('Erreur lors de la connexion', error.error); 
       return throwError(() => new Error(error.message)); 
     }),
-    
-    finalize(() => {
-      this.isLoadingLoginSubject.next(false); 
-    })
   );
   }
   postSignUp(data: SignUpRequest): Observable<String> {

@@ -31,19 +31,28 @@
             border :none;
             border-radius: 50%;
         }
-        .friend-more-modale{
-            display: none;
-        }
-        .friend-more-modale.visible{
+        .friend-more-modale-container{
+            position: relative;
+            .friend-more-modale{
+                display: none;
+            }
+            .friend-more-modale.visible{
             display: flex;
+            align-items: center;
             position: absolute;
-            top: 15vh;
-            width: 100px;
-            height:200px;
+            top: 40px;
+            right: 20px;
+            width: 150px;
+            padding: 10px 10px;
             background-color: rgb(44, 44, 44);
             border-radius: 5px;
-
+            p{
+                color: red;
+                margin:0px
+            }
         }
+        }
+    
         
     }
     

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input} from '@angular/core';
-import { User } from '../../types/types';
+import { Friend, User } from '../../types/types';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-min-profile-card',
@@ -11,5 +12,12 @@ import { Observable } from 'rxjs';
 })
 export class MinProfileCardComponent {
   @Input() mp?: Boolean
-  @Input() user?: Observable<User| null>
+  @Input() user?: Observable<User | null>
+  @Input() friend?: Friend
+  constructor(private router: Router) {
+    
+  }
+  handleProfileClick() {
+    this.router.navigateByUrl(`/conversation/${this.friend?.friendshipId}`);
+  }
 }

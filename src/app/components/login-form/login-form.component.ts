@@ -9,7 +9,6 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { FormValidatorsService } from '../../utils/utils';
 import { LoginResquest } from '../../types/types';
 import { AuthService } from '../../services/authServices';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 
@@ -20,8 +19,8 @@ import { Router } from '@angular/router';
   styleUrl: './login-form.component.scss'
 })
 export class LoginComponent {
-  isLoadingLogin$!: Observable<boolean>;
-  errorLogin$!: Observable<string | null>;
+  isLoadingLogin: boolean = false;
+  errorLogin: string | null = null;
   
   validateLoginForm: any;
 
@@ -31,8 +30,6 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router// Assuming AuthService is injected here
   ) {
-    this.isLoadingLogin$ = this.authService.isLoadingLogin$; // Initialisation après le constructeur
-    this.errorLogin$ = this.authService.errorLogin$;
     this.validateLoginForm = this.fb.group({
       email: this.fb.control('', [Validators.required, Validators.email]),
       password: this.fb.control('', [Validators.required, Validators.minLength(6)])
@@ -51,17 +48,21 @@ export class LoginComponent {
  
   submitLoginForm() {
     const loginRequest: LoginResquest = { email: this.validateLoginForm.value.email, password: this.validateLoginForm.value.password }
-     this.authService.postLogin(loginRequest).subscribe({
+    this.isLoadingLogin = true;
+    this.errorLogin = null;
+    this.authService.postLogin(loginRequest).subscribe({
     next: (response) => {
-         console.log('Connexion réussie : ', response);
+        console.log('Connexion réussie : ', response);
         this.authService.setUser(response.user);
         this.authService.setToken(response.accessToken);
-        this.router.navigateByUrl(`/home/${response.user.id}`);
+        this.router.navigateByUrl(`/home`);
          
     },
     error: (err) => {
       console.error('Erreur lors de la connexion', err);
+      this.errorLogin = err
     },
+    
   });
   }
 

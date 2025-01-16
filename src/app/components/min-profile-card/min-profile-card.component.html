@@ -1,8 +1,21 @@
-<div class="profile" [ngClass]="{ 'mp': mp }" >
-    <div class="profile-picture-container">
-        <img src="" alt="">
+@if(mp){
+    <div class="profile" (click)="handleProfileClick()" [ngClass]="{ 'mp': mp }" >
+        <div class="profile-picture-container">
+            <img src="" alt="">
+        </div>
+        <div class="profile-info-container">
+            <p *ngIf="friend">{{friend.friendName}}</p>
+        </div>
     </div>
-    <div *ngIf="(user| async) as user" class="profile-info-container">
-        <p>{{user.username}}</p>
+}@else{
+    <div class="profile">
+        <div class="profile-picture-container">
+            <img src="" alt="">
+        </div>
+        <div class="profile-info-container">
+            <p *ngIf="(user| async) as user">{{user.username}}</p>
+        </div>
     </div>
-</div>
+}
+
+

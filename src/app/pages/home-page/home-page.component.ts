@@ -1,8 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { FriendsListComponent } from '../../components/friends-list/friends-list.component';
 import { SearchFriendInputComponent } from '../../components/search-friend-input/search-friend-input.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { MinProfileCardComponent } from '../../components/min-profile-card/min-profile-card.component';
 import { Friend, User } from '../../types/types';
 import { Observable } from 'rxjs';
 import { friendService } from '../../services/friendServices';
@@ -10,11 +9,12 @@ import { AuthService } from '../../services/authServices';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { CommonModule } from '@angular/common';
 import { FriendRequestModalComponent } from '../../components/friend-request-modal/friend-request-modal.component';
+import { ConversationSideBarComponent } from '../../conversation-side-bar/conversation-side-bar.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [FriendsListComponent,SearchFriendInputComponent,NzIconModule,MinProfileCardComponent,NzSpinModule,CommonModule,FriendRequestModalComponent],
+  imports: [FriendsListComponent,SearchFriendInputComponent,NzIconModule,NzSpinModule,CommonModule,FriendRequestModalComponent,ConversationSideBarComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })

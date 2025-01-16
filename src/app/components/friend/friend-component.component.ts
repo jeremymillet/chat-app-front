@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component,ElementRef,HostListener, Input} from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { friendService } from '../../services/friendServices';
 import { AuthService } from '../../services/authServices';
 import { Observable } from 'rxjs';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -25,7 +27,9 @@ export class FriendComponent {
 
   isVisible: boolean = false;
 
-  constructor(private friendServices: friendService, private authService: AuthService) { this.token$ = this.authService.token$ };
+  constructor(private friendServices: friendService, private authService: AuthService
+    ,private elementRef: ElementRef,private router: Router
+  ) { this.token$ = this.authService.token$ };
   accepteFriendrequest(): void {
     this.token$.subscribe((token) => {
       if (token) {
@@ -42,16 +46,50 @@ export class FriendComponent {
     }
     )
   }
+  deleteFriend(): void {
+    this.token$.subscribe((token) => {
+      if (token) {
+        this.friendServices.deleteFriend(this.friend.friendshipId,token).subscribe({
+        next: (response) => {
+          console.log('accepte : ', response);
+          alert('friend accepte');
+        },
+        error: (err) => {
+          console.error('Error sent request', err);
+        },
+      });
+      }
+    }
+    )
+  }
   
+  handleMessageBtn() {
+    this.router.navigateByUrl(`/conversation/${this.friend.friendshipId}`);
+  }
+  cancel(): void {
+    this.closeModal()
+  }
 
-cancel(): void {
+  confirm(): void {
+    this.deleteFriend()
+  }
+    
+  onModalClick(event: Event) {
+    event.stopPropagation();
+  }
+  closeModal(): void { 
+    this.isVisible = false;
+  }
+   @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.isVisible = false; // Ferme la modale si le clic est à l'extérieur
+    }
+  }
 
 }
 
-confirm(): void {
- 
-}
-}
 
 
 
