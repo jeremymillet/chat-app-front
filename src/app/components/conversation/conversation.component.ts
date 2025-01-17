@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MessageListComponent } from '../message-list/message-list.component';
-import { Friend } from '../../types/types';
+import { Conversation, Friend } from '../../types/types';
 
 @Component({
   selector: 'app-conversation',
@@ -9,5 +9,10 @@ import { Friend } from '../../types/types';
   styleUrl: './conversation.component.scss'
 })
 export class ConversationComponent {
-  @Input() friend! : Friend
+  @Input() friend!: Friend
+  @Input() conversation!: Conversation
+  
+  constructor() {
+    
+  }
 }

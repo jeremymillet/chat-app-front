@@ -16,3 +16,66 @@
     height: 100vh;
     padding: 0px 20px;
 }
+.friend-card-info-container{
+    width: 20%;
+    height: 100vh;
+    background-color:#232428;
+    .friend-card-hero{
+        width: 100%;
+        height: 20%;
+        background-color: #2b2d31;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img{
+            width: 70px;
+            height: 70px;
+            position: relative;
+            top: 40%;
+            right: 25%;
+        }
+        
+    }
+    .friend-info{
+        width: 100%;
+        padding:0 5%;
+        color: white;
+        font-size: 12px;
+        .friend-info-name-id{
+            color: white;
+            margin-bottom: 10px;
+            h2{
+                font-weight: 500;
+                color: white;
+                margin: 0px;
+            }
+            p{
+                font-weight: 400;
+                margin: 0px;
+            }
+        }
+    }
+    .friend-info-about-created-at{
+        width: 100%;
+        background-color: #2f3136;
+        border-radius: 5px;
+        padding: 5%;
+        .about,.created-at{
+            display: flex;
+            flex-direction: column;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            span{
+                font-size: 10px;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+            p{
+                width: 100%;
+                font-size: 10px;
+            }
+        }
+    }
+}

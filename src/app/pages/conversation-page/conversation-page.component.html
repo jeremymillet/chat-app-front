@@ -1,25 +1,23 @@
 <div class="conversation-page-container">
     <app-conversation-side-bar class="sidebar" [user$]="user$"></app-conversation-side-bar>
-    <div class="conversation-part">
-        <app-conversation [friend]="friend"></app-conversation>
-    </div>
-    <div>
-        <div>
+    <app-conversation class="conversation-part" [conversation]="conversation" [friend]="friend"></app-conversation>
+    <div class="friend-card-info-container">
+        <div class="friend-card-hero">
             <div></div>
-            <img src="" alt="">
+            <img  src="/usericon2.png" alt="test">
         </div>
-        <div>
-            <div>
-                <p>{{friend.friendName}}</p>
-                <p>{{friend.friendId}}</p>
+        <div class="friend-info">
+            <div class="friend-info-name-id">
+                <h2>{{friend.friendName}}</h2>
+                <p>id:{{friend.friendId}}</p>
             </div>
-            <div>
-                <div>
-                    <p>a propos</p>
-                    <p></p>
+            <div class="friend-info-about-created-at">
+                <div class="about">
+                    <span>à propos de moi</span>
+                    <p>jqiopjfipqjfpoiqjfpiqkfoqjfipqjo^fkqpifjqofkjq</p>
                 </div>
-                <div>
-                    <p>membre depuis</p>
+                <div class="created-at">
+                    <span>Membre depuis</span>
                     <p>{{friend.createdAt}}</p>
                 </div>
 

@@ -3,9 +3,10 @@ import { ConversationSideBarComponent } from '../../components/conversation-side
 import { Observable } from 'rxjs';
 import { friendService } from '../../services/friendServices';
 import { AuthService } from '../../services/authServices';
-import { Friend, User } from '../../types/types';
+import { Conversation, Friend, User } from '../../types/types';
 import { ConversationComponent } from '../../components/conversation/conversation.component';
 import { ActivatedRoute } from '@angular/router';
+import { conversationsService } from '../../services/conversationServices';
 
 @Component({
   selector: 'app-conversation-page',
@@ -18,8 +19,9 @@ export class ConversationPageComponent {
   token$!: Observable<string | null>
   friendshipId!: number; 
   friend!: Friend;
+  conversation!: Conversation;
 
-  constructor(private authService: AuthService,private friendServices: friendService,private route: ActivatedRoute) {
+  constructor(private conversationServices:conversationsService,private authService: AuthService,private friendServices: friendService,private route: ActivatedRoute) {
     this.user$ = this.authService.user$;
     this.token$ = this.authService.token$;
 
@@ -39,6 +41,14 @@ export class ConversationPageComponent {
           next: (response) => {
             console.log('recuperation des friends : ', response);
             this.friend = response;
+            this.conversationServices.getConversation(this.friendshipId,token).subscribe({
+              next: (response) => {
+                this.conversation = response;
+              },
+              error: (err) => {
+              console.error('Erreur lors de la récupération des amis', err);
+              },
+            })
           },
           error: (err) => {
             console.error('Erreur lors de la récupération des amis', err);
