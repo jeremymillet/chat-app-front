@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FriendsListComponent } from '../../components/friends-list/friends-list.component';
 import { SearchFriendInputComponent } from '../../components/search-friend-input/search-friend-input.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -18,7 +18,7 @@ import { ConversationSideBarComponent } from '../../components/conversation-side
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
   isVisible = false;
   isLoadingFriends$!: Observable<boolean>;
   errorFriends$!: Observable<string | null>;
@@ -37,10 +37,10 @@ export class HomePageComponent {
     this.token$ = this.authService.token$;
      this.filteredFriends$ = this.friendServices.filteredFriends$;
      this.filterType$ = this.friendServices.filterType$
-    
-
+  }
+  ngOnInit(): void {
     // Souscription pour récupérer l'utilisateur et charger ses amis
-     this.user$.subscribe((user) => {
+       this.user$.subscribe((user) => {
        this.token$.subscribe((token) => { 
          if (user && token) {
         this.friendServices.getFriends(user.id,token).subscribe({

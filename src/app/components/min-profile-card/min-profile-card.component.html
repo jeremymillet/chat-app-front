@@ -1,7 +1,7 @@
 @if(mp){
     <div class="profile" (click)="handleProfileClick()" [ngClass]="{ 'mp': mp }" >
         <div class="profile-picture-container">
-            <img src="" alt="">
+            <img src="/usericon2.png" alt="">
         </div>
         <div class="profile-info-container">
             <p *ngIf="friend">{{friend.friendName}}</p>
@@ -10,7 +10,7 @@
 }@else{
     <div class="profile">
         <div class="profile-picture-container">
-            <img src="/usericon2" alt="">
+            <img src="/usericon2.png" alt="">
         </div>
         <div class="profile-info-container">
             <p *ngIf="(user| async) as user">{{user.username}}</p>

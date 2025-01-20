@@ -6,7 +6,8 @@ import { Message } from "../types/types";
 @Injectable({
     providedIn: 'root',
 })
-export class conversationsService { 
+export class messagesService { 
+    
     constructor(private http: HttpClient) { }
     
     getMessages(conversationId: number,token: string):Observable<Message[]> {

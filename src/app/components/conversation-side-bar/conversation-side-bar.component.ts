@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MinProfileCardComponent } from '../min-profile-card/min-profile-card.component';
 import { Friend, User } from '../../types/types';
 import { Observable } from 'rxjs';
@@ -12,13 +12,14 @@ import { CommonModule } from '@angular/common';
   templateUrl: './conversation-side-bar.component.html',
   styleUrl: './conversation-side-bar.component.scss'
 })
-export class ConversationSideBarComponent {
+export class ConversationSideBarComponent implements OnInit{
   @Input() user$!: Observable<User | null>
   token$!: Observable<string | null>
 
   friendsWithConversation : Friend[] = [];
   
-  constructor(private authService: AuthService, private friendServices: friendService) {
+  constructor(private authService: AuthService, private friendServices: friendService) {}
+  ngOnInit(): void { 
     this.token$ = this.authService.token$;
     if (this.user$) {
       this.user$.subscribe((user) => {
@@ -38,7 +39,6 @@ export class ConversationSideBarComponent {
      });
     }
   }
-
   setFriendsWithConversation(friends: Friend[]) {
     this.friendsWithConversation = friends;
   }

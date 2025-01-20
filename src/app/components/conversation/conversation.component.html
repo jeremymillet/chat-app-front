@@ -1,10 +1,18 @@
-<div>
-    <div class="friend-info-container">
-        <img src="" alt="">
-        <p></p>
-    </div>
-    <app-message-list [conversation]="conversation"></app-message-list>
-    <div>
-        <input type="text" placeholder="Envoyer un message a @{{friend.friendName}}">
-    </div>
+<div class="conversation-container">
+  <!-- Informations de l'ami -->
+  <div class="friend-info-container" *ngIf="friend">
+    <img src="/usericon2.png" alt="Photo de profil">
+    <p>{{ friend.friendName }}</p>
+  </div>
+
+  <!-- Liste des messages -->
+  <app-message-list  *ngIf="conversation" [conversation]="conversation"></app-message-list>
+
+  <!-- Zone d'entrée pour envoyer un message -->
+  <div class="message-input-container" *ngIf="friend">
+    <input
+      type="text"
+      placeholder="Envoyer un message à @{{ friend.friendName }}"
+    />
+  </div>
 </div>

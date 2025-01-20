@@ -1,9 +1,11 @@
 .profile{
     padding: 0 20px;
     display: flex;
+    align-items: center;
+    column-gap: 5px;
     height: 10vh;
     background-color: #232428;
-    .profile-picture-container{
+    .profile-picture-container img{
         width: 30px;
     }
     .profile-info-container{
@@ -24,6 +26,7 @@
     }
 }
 .profile.mp{
+    padding: 0;
     background-color: transparent;
     .profile-info-container{
         p{

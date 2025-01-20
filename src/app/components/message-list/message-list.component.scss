@@ -1,4 +1,13 @@
-.message-list{
+.message-list-container{
     width: 100%;
-    height: 90vh;
+    height: 83vh;
+    .message-list{
+        width: 100%;
+    }
+}
+@media(min-height: 1000px){
+    .message-list-container{
+    width: 100%;
+    height: 88vh;
+}
 }

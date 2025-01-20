@@ -67,7 +67,7 @@ export class friendService{
         })
     );
   }
-  getFriend(userId: number,friendshipId : number, token: string) {
+  getFriend(userId: number,friendshipId : number, token: string): Observable<Friend>{
     return this.http.get<Friend>(`http://localhost:8080/friends/${userId}/friend/${friendshipId}`, {
         headers: {
             'Authorization': 'Bearer '+ token,

@@ -1,3 +1,17 @@
-<div class="message-list">
-    <app-message></app-message>
+<div class="message-list-container">
+  <!-- Gestion de l'état de chargement -->
+  <div *ngIf="isLoading" class="loading-indicator">Chargement des messages...</div>
+
+  <!-- Liste des messages -->
+  <div *ngIf="!isLoading && messageList.length > 0" class="message-list">
+    <app-message
+      *ngFor="let message of messageList"
+      [message]="message">
+    </app-message>
+  </div>
+
+  <!-- Message si aucun message n'est disponible -->
+  <div *ngIf="!isLoading && messageList.length === 0" class="no-messages">
+    Aucun message trouvé.
+  </div>
 </div>

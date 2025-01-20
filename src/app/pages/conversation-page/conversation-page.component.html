@@ -1,27 +1,31 @@
 <div class="conversation-page-container">
-    <app-conversation-side-bar class="sidebar" [user$]="user$"></app-conversation-side-bar>
-    <app-conversation class="conversation-part" [conversation]="conversation" [friend]="friend"></app-conversation>
-    <div class="friend-card-info-container">
-        <div class="friend-card-hero">
-            <div></div>
-            <img  src="/usericon2.png" alt="test">
-        </div>
-        <div class="friend-info">
-            <div class="friend-info-name-id">
-                <h2>{{friend.friendName}}</h2>
-                <p>id:{{friend.friendId}}</p>
-            </div>
-            <div class="friend-info-about-created-at">
-                <div class="about">
-                    <span>à propos de moi</span>
-                    <p>jqiopjfipqjfpoiqjfpiqkfoqjfipqjo^fkqpifjqofkjq</p>
-                </div>
-                <div class="created-at">
-                    <span>Membre depuis</span>
-                    <p>{{friend.createdAt}}</p>
-                </div>
+  <app-conversation-side-bar class="sidebar" [user$]="user$"></app-conversation-side-bar>
 
-            </div>
-        </div>
+  <app-conversation
+    class="conversation-part"
+    [conversation]="conversation$ | async"
+    [friend]="friend$ | async">
+  </app-conversation>
+
+  <div class="friend-card-info-container" *ngIf="friend$ | async as friend">
+    <div class="friend-card-hero">
+      <img src="/usericon2.png" alt="Photo de profil" />
     </div>
+    <div class="friend-info">
+      <div class="friend-info-name-id">
+        <h2>{{ friend.friendName }}</h2>
+        <p>ID: {{ friend.friendId }}</p>
+      </div>
+      <div class="friend-info-about-created-at">
+        <div class="about">
+          <span>À propos de moi</span>
+          <p></p>
+        </div>
+        <div class="created-at">
+          <span>Membre depuis</span>
+          <p>{{ friend.createdAt | date: 'longDate' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
