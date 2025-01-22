@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ConversationSideBarComponent } from '../../components/conversation-side-bar/conversation-side-bar.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { friendService } from '../../services/friendServices';
 import { AuthService } from '../../services/authServices';
 import { Conversation, Friend, User } from '../../types/types';
@@ -8,6 +8,7 @@ import { ConversationComponent } from '../../components/conversation/conversatio
 import { ActivatedRoute } from '@angular/router';
 import { conversationsService } from '../../services/conversationServices';
 import { CommonModule } from '@angular/common';
+import { WebSocketService } from '../../services/webSocketServices';
 
 @Component({
   selector: 'app-conversation-page',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './conversation-page.component.html',
   styleUrl: './conversation-page.component.scss'
 })
-export class ConversationPageComponent {
+export class ConversationPageComponent { 
   user$!: Observable<User | null>;
   token$!: Observable<string | null>
   friendshipId!: number; 
@@ -25,7 +26,8 @@ export class ConversationPageComponent {
   private conversationSubject = new BehaviorSubject<Conversation | null>(null);
   public conversation$ = this.conversationSubject.asObservable();
 
-  constructor(private conversationServices:conversationsService,private authService: AuthService,private friendServices: friendService,private route: ActivatedRoute) {
+  constructor(private conversationServices: conversationsService, private authService: AuthService,
+    private friendServices: friendService, private route: ActivatedRoute) {
     this.user$ = this.authService.user$;
     this.token$ = this.authService.token$;
   }

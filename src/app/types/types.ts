@@ -48,5 +48,10 @@ export interface SignUpRequest{
     password: string;
     email: string;
 }
+export interface postMessage{
+    conversationId: number;
+    senderId: number;
+    content: string;
+}
 
 

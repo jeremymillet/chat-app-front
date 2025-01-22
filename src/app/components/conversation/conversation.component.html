@@ -6,13 +6,10 @@
   </div>
 
   <!-- Liste des messages -->
-  <app-message-list  *ngIf="conversation" [conversation]="conversation"></app-message-list>
+  <app-message-list  *ngIf="conversation" [user]="user" [friend]="friend"[conversation]="conversation"></app-message-list>
 
   <!-- Zone d'entrée pour envoyer un message -->
-  <div class="message-input-container" *ngIf="friend">
-    <input
-      type="text"
-      placeholder="Envoyer un message à @{{ friend.friendName }}"
-    />
-  </div>
+  <form  [formGroup]="validateForm" *ngIf="friend">
+    <input type="text" formControlName="message" placeholder="Envoyer un message à @{{ friend.friendName }}" (keydown.enter)="submitMessage()"/>
+  </form>
 </div>

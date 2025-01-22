@@ -1,1 +1,15 @@
-<p>message works!</p>
+<div class="message">
+    <img class="message-img" src="" alt="">
+    <div class="message-info-content">
+        <div class="message-info">
+            @if (message.senderId === friend?.friendId) {
+                <h3 class="message-sender-name">{{friend?.friendName}}</h3>
+            }@else {
+                <h3 class="message-sender-name">{{user?.username}}</h3>
+            }
+            <p class="message-time">{{ getFormattedDate(message.timestamp)}}</p>
+        </div>
+        <p class="message-content">{{message.content}}</p>
+    </div>
+</div>
+

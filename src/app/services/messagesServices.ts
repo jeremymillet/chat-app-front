@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, Observable, throwError } from "rxjs";
-import { Message } from "../types/types";
+import { Message, postMessage } from "../types/types";
 
 @Injectable({
     providedIn: 'root',
@@ -22,5 +22,18 @@ export class messagesService {
                   return throwError(() => new Error(error.message)); 
                 }),
             );
+    }
+    postMessages(token: string,message:postMessage){
+        return this.http.post<string>(`http://localhost:8080/messages/send`, message, {
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            responseType: 'text' as 'json',
+        }).pipe(
+            catchError((error: HttpErrorResponse) => {
+                console.error("Erreur lors de l'envoie  du messages", error.error);
+                return throwError(() => new Error(error.message)); 
+            }),
+        )
     }
 }

@@ -4,7 +4,8 @@
   <app-conversation
     class="conversation-part"
     [conversation]="conversation$ | async"
-    [friend]="friend$ | async">
+    [friend]="friend$ | async"
+    [user]="user$ | async">
   </app-conversation>
 
   <div class="friend-card-info-container" *ngIf="friend$ | async as friend">

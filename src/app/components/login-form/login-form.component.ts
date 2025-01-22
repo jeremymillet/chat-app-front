@@ -55,6 +55,7 @@ export class LoginComponent {
         console.log('Connexion réussie : ', response);
         this.authService.setUser(response.user);
         this.authService.setToken(response.accessToken);
+        this.validateLoginForm.reset();
         this.router.navigateByUrl(`/home`);
          
     },

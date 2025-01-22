@@ -42,6 +42,8 @@ export class ConversationSideBarComponent implements OnInit{
   setFriendsWithConversation(friends: Friend[]) {
     this.friendsWithConversation = friends;
   }
+
+  
   
 
 }

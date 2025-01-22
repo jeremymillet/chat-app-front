@@ -44,6 +44,7 @@ export class FriendRequestModalComponent {
           next: (response) => {
             console.log('request sent : ', response);
             alert('request sent');
+            this.validateFriendForm.reset();
           },
           error: (err) => {
             console.error('Error sent request', err);

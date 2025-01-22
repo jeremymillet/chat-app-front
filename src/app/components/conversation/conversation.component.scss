@@ -5,10 +5,11 @@
     .friend-info-container{
         width: 100%;
         display: flex;
-        padding: 10px 0px;
+        padding: 10px 20px;
         column-gap: 5px;
         align-items: center;
         margin-bottom: 20px;
+        border-bottom: solid 1px #272727;
         img{
             width: 25px;
             height: 25px;
@@ -18,11 +19,20 @@
         }
     }
 }
-
-input{
-    width: 100%;
-    height: 40px;
-    background-color: #383a40;
-    border: none;
-    border-radius: 5px;
+form{
+    padding: 0px 20px;
+    input{
+        width: 100%;
+        padding-left:10px;
+        height: 40px;
+        background-color: #383a40;
+        border: none;
+        border-radius: 5px;
+        touch-action: none;
+    }
+    input:focus{
+        outline: none;
+    }
+    
 }
+

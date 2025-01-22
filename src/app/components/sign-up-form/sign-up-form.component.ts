@@ -47,7 +47,8 @@ export class SignUpFormComponent {
     this.authService.postSignUp(signUpRequest).subscribe({
     next: (response) => {
           console.log('Inscription réussie : ', response);
-          alert("Inscription réussie")
+        alert("Inscription réussie")
+        this.validateSignUpForm.reset();
     },
     error: (err) => {
       console.error("Erreur lors de l'inscription", err);
