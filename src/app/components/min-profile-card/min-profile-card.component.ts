@@ -18,6 +18,6 @@ export class MinProfileCardComponent {
     
   }
   handleProfileClick() {
-    this.router.navigateByUrl(`/conversation/${this.friend?.friendshipId}`);
+    this.router.navigateByUrl(`conversation/${this.friend?.friendshipId}`);
   }
 }

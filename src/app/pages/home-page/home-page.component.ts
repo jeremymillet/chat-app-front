@@ -45,7 +45,6 @@ export class HomePageComponent implements OnInit {
          if (user && token) {
         this.friendServices.getFriends(user.id,token).subscribe({
           next: (response) => {
-            console.log('recuperation des friends : ', response);
             this.friendServices.setFriends(response);
           },
           error: (err) => {

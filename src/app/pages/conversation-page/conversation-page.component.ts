@@ -38,7 +38,6 @@ export class ConversationPageComponent {
       const id = params.get('id');
       if (id) {
         this.friendshipId = Number(id);
-        console.log('Friendship ID:', this.friendshipId);
 
         // Lancer les appels API dans ngOnInit
         this.loadData();
@@ -54,14 +53,11 @@ export class ConversationPageComponent {
           // Récupérer les informations de l'ami
           this.friendServices.getFriend(user.id, this.friendshipId, token).subscribe({
             next: (response) => {
-              console.log('Récupération des amis : ', response);
               this.friendSubject.next(response);
-
               // Récupérer la conversation de l'ami
               this.conversationServices.getConversation(this.friendshipId, token).subscribe({
                 next: (response) => {
                   this.conversationSubject.next(response);
-                  console.log('Récupération des conversations : ', response);
                 },
                 error: (err) => {
                   console.error('Erreur lors de la récupération des conversations', err);

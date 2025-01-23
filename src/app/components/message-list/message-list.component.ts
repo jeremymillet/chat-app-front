@@ -25,32 +25,51 @@ export class MessageListComponent implements OnInit, OnDestroy {
     private authServices: AuthService,
     private messageService: messagesService,
     private webSocketService: WebSocketService,
-    private cdr: ChangeDetectorRef // Injecter ChangeDetectorRef
   ) {
     this.token$ = this.authServices.token$;
   }
 
   ngOnInit(): void {
     if (this.user && this.conversation) {
+      this.messageList = [];
       this.getMessages();
       this.webSocketService.subscribeToConversation(this.conversation.conversationId);
 
       this.messageSubscription = this.webSocketService.getMessages().subscribe(message => {
-        console.log(message);
         if (message) {
-          console.log(message);
           this.messageList.push(message); // Ajouter le message reçu à la liste des messages
-          this.cdr.detectChanges(); // Notifier Angular de la mise à jour pour rafraîchir l'affichage
         }
       });
     }
   }
+  ngOnChanges(changes: SimpleChanges): void {
+  if (changes['conversation'] && this.conversation) {
+    // Se désabonner de la conversation précédente
+    if (this.messageSubscription) {
+      this.messageSubscription.unsubscribe();
+    }
+    // Réinitialiser les messages pour la nouvelle conversation
+    this.messageList = [];
+
+    // Charger les messages pour la nouvelle conversation
+    this.getMessages();
+
+    // S'abonner au WebSocket pour la nouvelle conversation
+    this.webSocketService.subscribeToConversation(this.conversation.conversationId);
+    this.messageSubscription = this.webSocketService.getMessages().subscribe(message => {
+        if (message) {
+          this.messageList.push(message); // Ajouter le message reçu à la liste des messages
+        }
+      });
+  }
+}
 
   ngOnDestroy(): void {
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
     }
     this.webSocketService.disconnect();
+    this.messageList = [];
   }
 
   getMessages(): void {
@@ -60,7 +79,6 @@ export class MessageListComponent implements OnInit, OnDestroy {
           this.messageService.getMessages(this.conversation.conversationId, token).subscribe({
             next: (messages) => {
               this.messageList = messages;
-              console.log('Messages récupérés :', this.messageList);
             },
             error: (err) => {
               console.error('Erreur lors de la récupération des messages:', err);

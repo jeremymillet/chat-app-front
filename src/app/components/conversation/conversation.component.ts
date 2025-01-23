@@ -40,7 +40,6 @@ export class ConversationComponent {
         if (token) {
           this.messageService.postMessages(token, postMessage).subscribe({
             next: (response) => {
-              console.log('message envoyé');
               this.validateForm.reset();
             },
             error: (err) => {

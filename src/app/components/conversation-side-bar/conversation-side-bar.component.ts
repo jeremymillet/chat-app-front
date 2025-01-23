@@ -27,7 +27,6 @@ export class ConversationSideBarComponent implements OnInit{
          if (user && token) {
         this.friendServices.getFriendsWithConversations(user.id,token).subscribe({
           next: (response) => {
-            console.log('recuperation des friends avec conversations : ', response);
             this.setFriendsWithConversation(response);
           },
           error: (err) => {
