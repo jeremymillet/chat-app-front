@@ -26,7 +26,7 @@ export class FriendRequestModalComponent {
   validateFriendForm: any;
 
   constructor(private fb: NonNullableFormBuilder, private formValidators: FormValidatorsService, private authService: AuthService, private friendServices: friendService) {
-    this.token$ = this.authService.token$;
+    this.token$ = this.authService.accessToken$;
     this.user$ = this.authService.user$;
     this.validateFriendForm = this.fb.group({
       id: this.fb.control('', [Validators.required]),
@@ -42,7 +42,6 @@ export class FriendRequestModalComponent {
         if (user && token) {
         this.friendServices.addFriend(user.id,this.validateFriendForm.value.id,token).subscribe({
           next: (response) => {
-            console.log('request sent : ', response);
             alert('request sent');
             this.validateFriendForm.reset();
           },
@@ -53,12 +52,10 @@ export class FriendRequestModalComponent {
       }
        })
     });
-    console.log('Button ok clicked!');
     this.closeModal.emit(); // Notifie le parent que le modal doit être fermé
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.closeModal.emit(); // Notifie le parent que le modal doit être fermé
   }
 }

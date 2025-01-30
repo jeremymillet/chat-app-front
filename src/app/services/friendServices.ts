@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, catchError, combineLatest, finalize, map, Observable, throwError } from "rxjs";
 import { Friend } from "../types/types";
 import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { AuthService } from "./authServices";
 
 @Injectable({
   providedIn: 'root',
@@ -44,121 +45,101 @@ export class friendService{
   filterType$ = this.filterTypeSubject.asObservable();
   
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { 
+  }
   
-  getFriends(userId:number,token:string):Observable<Friend[]>{
-    this.isLoadingFriendsSubject.next(true);
-    this.errorFriendsSubject.next(null);
+  getFriends(userId: number, token: string): Observable<Friend[]> {
+    const requestFn = () => this.http.get<Friend[]>(`http://localhost:8080/friends/${userId}/friends`, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }
+    });
 
-    return this.http.get<Friend[]>(`http://localhost:8080/friends/${userId}/friends`, {
-        headers: {
-            'Authorization': 'Bearer ' +token,
-            'Content-Type': 'application/json'
-        }
-    }).pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error('Erreur lors de la connexion', error.error);
-          this.errorFriendsSubject.next(error.error || 'Une erreur est survenue'); 
-          return throwError(() => new Error(error.message)); 
-        }),
-        
-        finalize(() => {
-          this.isLoadingFriendsSubject.next(false); 
-        })
+    return this.authService.retryWithToken(requestFn).pipe(
+      finalize(() => {
+        this.isLoadingFriendsSubject.next(false);
+      })
     );
   }
-  getFriend(userId: number,friendshipId : number, token: string): Observable<Friend>{
-    return this.http.get<Friend>(`http://localhost:8080/friends/${userId}/friend/${friendshipId}`, {
-        headers: {
-            'Authorization': 'Bearer '+ token,
-            'Content-Type': 'application/json'
-        }
-    }).pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error("Erreur lors de la récupération de l'ami", error.error);
-          return throwError(() => new Error(error.message)); 
-        })
-    );
-  }
+  getFriend(userId: number, friendshipId: number, token: string): Observable<Friend> {
+  const requestFn = () =>
+    this.http.get<Friend>(`http://localhost:8080/friends/${userId}/friend/${friendshipId}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+  return this.authService.retryWithToken(requestFn);
+}
   
   addFriend(userId: number, friendId: number, token: string): Observable<any> {
-    this.isLoadingFriendsRequestSubject.next(true);
-    this.errorFriendsRequestSubject.next(null);
-    return this.http.post<any>("http://localhost:8080/friends/send-request",null,{
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
+    const requestFn = () =>
+      this.http.post<any>("http://localhost:8080/friends/send-request", null, {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
         },
-        params: new HttpParams().set('friendId', String(friendId)).set('userId', userId)
-        }).pipe(
-            catchError((error: HttpErrorResponse) => {
-              console.error("Erreur lors de la requete d'amis", error.error);
-              this.errorFriendsRequestSubject.next(error.error || 'Une erreur est survenue'); 
-              return throwError(() => new Error(error.message)); 
-            }),
-            finalize(() => {
-              this.isLoadingFriendsRequestSubject.next(false); 
-            })
-        );
-  }
+        params: new HttpParams()
+          .set('friendId', String(friendId))
+          .set('userId', String(userId)),
+      });
 
-  acceptFriendRequest(userId:number, friendId:number, token: string): Observable<any> {
-    this.isLoadingFriendsRequestAccepteSubject.next(true);
-    this.errorFriendsRequestAccepteSubject.next(null);
-    return this.http.post<any>("http://localhost:8080/friends/accept-request", null,{
-      headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-      params: new HttpParams().set('friendId', String(friendId)).set('userId', userId)
-    }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error("Erreur lors de la requete d'acceptation", error.error);
-        this.errorFriendsRequestAccepteSubject.next(error.error || 'Une erreur est survenue'); 
-        return throwError(() => new Error(error.message)); 
-      }),
+    return this.authService.retryWithToken(requestFn).pipe(
       finalize(() => {
-        this.isLoadingFriendsRequestAccepteSubject.next(false); 
+        this.isLoadingFriendsRequestSubject.next(false);
       })
-    )
-
+    );
   }
-  deleteFriend(friendshipId:number, token: string): Observable<any> {
-    this.isLoadingDeleteFriendsSubject.next(true);
-    this.errorDeleteFriendsSubject.next(null);
-    return this.http.delete<any>("http://localhost:8080/friends/delete",{
-      headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-      params: new HttpParams().set('friendShipId',friendshipId)
-    }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error("Erreur lors de la suppression", error.error);
-        this.errorDeleteFriendsSubject.next(error.error || 'Une erreur est survenue'); 
-        return throwError(() => new Error(error.message)); 
-      }),
+
+  acceptFriendRequest(userId: number, friendId: number, token: string): Observable<any> {
+    const requestFn = () =>
+      this.http.post<any>("http://localhost:8080/friends/accept-request", null, {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+        params: new HttpParams()
+          .set('friendId', String(friendId))
+          .set('userId', String(userId)),
+      });
+
+    return this.authService.retryWithToken(requestFn).pipe(
       finalize(() => {
-        this.isLoadingDeleteFriendsSubject.next(false); 
+        this.isLoadingFriendsRequestAccepteSubject.next(false);
       })
-    )
-
+    );
   }
-  getFriendsWithConversations(userId : number, token: string): Observable<any> {
-    return this.http.get<Friend[]>(`http://localhost:8080/friends/${userId}/friendsWithConversations`,{
-      headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-      params: new HttpParams().set('userId',userId)
-    }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error("Erreur lors de la suppression", error.error); 
-        return throwError(() => new Error(error.error)); 
-      }),
-      
-    )
 
+  deleteFriend(friendshipId: number, token: string): Observable<any> {
+    const requestFn = () =>
+      this.http.delete<any>("http://localhost:8080/friends/delete", {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+        params: new HttpParams().set('friendShipId', String(friendshipId)),
+      });
+
+    return this.authService.retryWithToken(requestFn).pipe(
+      finalize(() => {
+        this.isLoadingDeleteFriendsSubject.next(false);
+      })
+    );
+  }
+
+  getFriendsWithConversations(userId: number, token: string): Observable<Friend[]> {
+    const requestFn = () =>
+      this.http.get<Friend[]>(`http://localhost:8080/friends/${userId}/friendsWithConversations`, {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+        params: new HttpParams().set('userId', String(userId)),
+      });
+
+    return this.authService.retryWithToken(requestFn);
   }
 
   public filteredFriends$: Observable<Friend[]> = combineLatest([

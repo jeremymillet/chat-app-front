@@ -46,7 +46,6 @@ export class SignUpFormComponent {
     const signUpRequest: SignUpRequest = { email: this.validateSignUpForm.value.email, password: this.validateSignUpForm.value.password, username: this.validateSignUpForm.value.username}
     this.authService.postSignUp(signUpRequest).subscribe({
     next: (response) => {
-          console.log('Inscription réussie : ', response);
         alert("Inscription réussie")
         this.validateSignUpForm.reset();
     },

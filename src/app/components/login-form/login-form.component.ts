@@ -52,11 +52,10 @@ export class LoginComponent {
     this.errorLogin = null;
     this.authService.postLogin(loginRequest).subscribe({
     next: (response) => {
-        console.log('Connexion réussie : ', response);
         this.authService.setUser(response.user);
-        this.authService.setToken(response.accessToken);
+        this.authService.setAccessToken(response.accessToken);
         this.validateLoginForm.reset();
-        this.router.navigateByUrl(`/home`);
+        this.router.navigateByUrl(`/`);
          
     },
     error: (err) => {

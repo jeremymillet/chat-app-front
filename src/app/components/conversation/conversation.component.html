@@ -10,6 +10,6 @@
 
   <!-- Zone d'entrée pour envoyer un message -->
   <form  [formGroup]="validateForm" *ngIf="friend">
-    <input type="text" formControlName="message" placeholder="Envoyer un message à @{{ friend.friendName }}" (keydown.enter)="submitMessage()"/>
+    <input type="text" formControlName="message" placeholder="Envoyer un message à @{{ friend.friendName }}" (keydown.enter)="submitMessage($event)"/>
   </form>
 </div>

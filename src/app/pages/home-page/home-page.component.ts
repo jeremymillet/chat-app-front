@@ -10,6 +10,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { CommonModule } from '@angular/common';
 import { FriendRequestModalComponent } from '../../components/friend-request-modal/friend-request-modal.component';
 import { ConversationSideBarComponent } from '../../components/conversation-side-bar/conversation-side-bar.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -29,18 +30,34 @@ export class HomePageComponent implements OnInit {
 
    constructor(
     private friendServices: friendService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.isLoadingFriends$ = this.friendServices.isLoadingFriends$;
     this.errorFriends$ = this.friendServices.errorFriends$;
     this.user$ = this.authService.user$;
-    this.token$ = this.authService.token$;
+    this.token$ = this.authService.accessToken$;
      this.filteredFriends$ = this.friendServices.filteredFriends$;
      this.filterType$ = this.friendServices.filterType$
   }
   ngOnInit(): void {
     // Souscription pour récupérer l'utilisateur et charger ses amis
-       this.user$.subscribe((user) => {
+      this.checkRefreshToken();
+      this.getFriends();
+  }
+   showModal(): void {
+    this.isVisible = true; // Affiche le modal
+  }
+
+  handleModalClose(): void {
+    this.isVisible = false; // Ferme le modal
+  }
+  
+  setFilter(filterType: 'all' | 'pending'): void {
+    this.friendServices.setFilterType(filterType);
+  }
+  getFriends() {
+     this.user$.subscribe((user) => {
        this.token$.subscribe((token) => { 
          if (user && token) {
         this.friendServices.getFriends(user.id,token).subscribe({
@@ -55,16 +72,19 @@ export class HomePageComponent implements OnInit {
        })
      });
   }
-   showModal(): void {
-    this.isVisible = true; // Affiche le modal
-  }
-
-  handleModalClose(): void {
-    this.isVisible = false; // Ferme le modal
-  }
-  
-  setFilter(filterType: 'all' | 'pending'): void {
-    this.friendServices.setFilterType(filterType);
+  checkRefreshToken() {
+    this.authService.refreshToken().subscribe({
+      next: (response) => {
+        // Si le refresh token est valide, tu peux récupérer le nouvel access token
+        this.authService.setAccessToken(response.accessToken);
+        this.authService.setUser(response.user);
+      },
+      error: (err) => {
+        // Si l'erreur se produit, rediriger vers la page de login
+        this.authService.deleteCookie("refreshToken");
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }
 

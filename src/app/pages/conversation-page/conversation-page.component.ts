@@ -5,7 +5,7 @@ import { friendService } from '../../services/friendServices';
 import { AuthService } from '../../services/authServices';
 import { Conversation, Friend, User } from '../../types/types';
 import { ConversationComponent } from '../../components/conversation/conversation.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { conversationsService } from '../../services/conversationServices';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../../services/webSocketServices';
@@ -27,14 +27,15 @@ export class ConversationPageComponent {
   public conversation$ = this.conversationSubject.asObservable();
 
   constructor(private conversationServices: conversationsService, private authService: AuthService,
-    private friendServices: friendService, private route: ActivatedRoute) {
+    private friendServices: friendService, private url: ActivatedRoute,private router : Router) {
     this.user$ = this.authService.user$;
-    this.token$ = this.authService.token$;
+    this.token$ = this.authService.accessToken$;
   }
 
   ngOnInit(): void {
+    this.checkRefreshToken();
     // Récupérer l'ID de l'ami à partir des paramètres de la route
-    this.route.paramMap.subscribe((params) => {
+    this.url.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.friendshipId = Number(id);
@@ -70,6 +71,20 @@ export class ConversationPageComponent {
           });
         }
       });
+    });
+  }
+  checkRefreshToken() {
+    this.authService.refreshToken().subscribe({
+      next: (response) => {
+        // Si le refresh token est valide, tu peux récupérer le nouvel access token
+        this.authService.setAccessToken(response.accessToken);
+        this.authService.setUser(response.user);
+      },
+      error: (err) => {
+        // Si l'erreur se produit, rediriger vers la page de login
+        this.authService.deleteCookie("refreshToken");
+        this.router.navigate(['/login']);
+      }
     });
   }
 }

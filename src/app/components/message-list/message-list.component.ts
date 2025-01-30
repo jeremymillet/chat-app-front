@@ -13,11 +13,13 @@ import { WebSocketService } from '../../services/webSocketServices';
   templateUrl: './message-list.component.html',
   styleUrl: './message-list.component.scss'
 })
-export class MessageListComponent implements OnInit, OnDestroy {
+export class MessageListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() conversation!: Conversation | null;
   @Input() friend!: Friend | null;
   @Input() user!: User | null;
   private messageSubscription: Subscription | null = null;
+  private currentConversationId: number | null = null;
+  private isInitialized = false;
   token$!: Observable<string | null>;
   messageList: Message[] = [];
 
@@ -26,50 +28,60 @@ export class MessageListComponent implements OnInit, OnDestroy {
     private messageService: messagesService,
     private webSocketService: WebSocketService,
   ) {
-    this.token$ = this.authServices.token$;
+    this.token$ = this.authServices.accessToken$;
   }
 
   ngOnInit(): void {
+    this.isInitialized = true;
     if (this.user && this.conversation) {
       this.messageList = [];
       this.getMessages();
-      this.webSocketService.subscribeToConversation(this.conversation.conversationId);
+      this.subscribeToMessages();
+    }
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isInitialized && changes['conversation'] && this.conversation) {
+      if (this.conversation.conversationId !== this.currentConversationId) {
+        // Réinitialiser les messages pour la nouvelle conversation
+        this.messageList = [];
+        this.getMessages();
+        this.subscribeToMessages();
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeFromMessages();
+    this.webSocketService.disconnect();
+    this.messageList = [];
+  }
+
+  private subscribeToMessages(): void {
+  this.unsubscribeFromMessages().then(() => {
+    if (this.conversation) {
+      this.currentConversationId = this.conversation.conversationId;
+      this.webSocketService.subscribeToConversation(this.conversation.conversationId);
       this.messageSubscription = this.webSocketService.getMessages().subscribe(message => {
         if (message) {
           this.messageList.push(message); // Ajouter le message reçu à la liste des messages
         }
       });
     }
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-  if (changes['conversation'] && this.conversation) {
-    // Se désabonner de la conversation précédente
-    if (this.messageSubscription) {
-      this.messageSubscription.unsubscribe();
-    }
-    // Réinitialiser les messages pour la nouvelle conversation
-    this.messageList = [];
-
-    // Charger les messages pour la nouvelle conversation
-    this.getMessages();
-
-    // S'abonner au WebSocket pour la nouvelle conversation
-    this.webSocketService.subscribeToConversation(this.conversation.conversationId);
-    this.messageSubscription = this.webSocketService.getMessages().subscribe(message => {
-        if (message) {
-          this.messageList.push(message); // Ajouter le message reçu à la liste des messages
-        }
-      });
-  }
+  });
 }
 
-  ngOnDestroy(): void {
-    if (this.messageSubscription) {
-      this.messageSubscription.unsubscribe();
-    }
-    this.webSocketService.disconnect();
-    this.messageList = [];
+private unsubscribeFromMessages(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.messageSubscription) {
+        this.messageSubscription.unsubscribe();
+        this.messageSubscription = null;
+      }
+      if (this.currentConversationId !== null) {
+        this.webSocketService.unsubscribeFromConversation(this.currentConversationId);
+      }
+      resolve();
+    });
   }
 
   getMessages(): void {
@@ -89,5 +101,4 @@ export class MessageListComponent implements OnInit, OnDestroy {
     }
   }
 }
-
 

@@ -24,12 +24,13 @@ export class ConversationComponent {
   
   constructor(private fb: NonNullableFormBuilder, private formValidators: FormValidatorsService,private messageService: messagesService,private authService: AuthService)
   {
-    this.token$ = this.authService.token$;
+    this.token$ = this.authService.accessToken$;
     this.validateForm = this.fb.group({
       message: this.fb.control('', [Validators.required, Validators.minLength(1)]),
     });
   }
-  submitMessage() {
+  submitMessage(event: Event) {
+    event.preventDefault();
     if (this.conversation && this.user) { // Vérifiez que `conversation` et `user` ne sont pas null
       const postMessage: postMessage = {
         conversationId: this.conversation.conversationId,

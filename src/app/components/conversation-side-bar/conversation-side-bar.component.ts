@@ -18,9 +18,11 @@ export class ConversationSideBarComponent implements OnInit{
 
   friendsWithConversation : Friend[] = [];
   
-  constructor(private authService: AuthService, private friendServices: friendService) {}
+  constructor(private authService: AuthService, private friendServices: friendService) {
+    this.token$ = this.authService.accessToken$;
+  }
+  
   ngOnInit(): void { 
-    this.token$ = this.authService.token$;
     if (this.user$) {
       this.user$.subscribe((user) => {
        this.token$.subscribe((token) => { 

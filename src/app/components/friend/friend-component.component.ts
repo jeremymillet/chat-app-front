@@ -29,13 +29,12 @@ export class FriendComponent {
 
   constructor(private friendServices: friendService, private authService: AuthService
     ,private elementRef: ElementRef,private router: Router
-  ) { this.token$ = this.authService.token$ };
+  ) { this.token$ = this.authService.accessToken$};
   accepteFriendrequest(): void {
     this.token$.subscribe((token) => {
       if (token) {
         this.friendServices.acceptFriendRequest(this.userId, this.friend.friendId,token).subscribe({
         next: (response) => {
-          console.log('accepte : ', response);
           alert('friend accepte');
         },
         error: (err) => {
@@ -51,8 +50,8 @@ export class FriendComponent {
       if (token) {
         this.friendServices.deleteFriend(this.friend.friendshipId,token).subscribe({
         next: (response) => {
-          console.log('accepte : ', response);
-          alert('friend accepte');
+  
+          alert('friend deleted');
         },
         error: (err) => {
           console.error('Error sent request', err);
