@@ -3,6 +3,17 @@ export interface User{
     username: string;
     email: string;
     createdAt: string;
+    description?: string;
+    profilePicture?: string;
+}
+export interface UserProfileEditRequest {
+    id: number;
+    username?: string;
+    description?: string;
+}
+export interface EditProfilePictureRequest{
+    userId: number;
+    profilePicture: File;
 }
 
 export interface Friend{

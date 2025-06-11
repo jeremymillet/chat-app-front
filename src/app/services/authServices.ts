@@ -9,10 +9,9 @@ import { LoginResponse, LoginResquest, SignUpRequest, User} from '../types/types
 })
 export class AuthService {
 
-
-
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
+
   private accesstokenSubject = new BehaviorSubject<string | null>(null);
   public accessToken$ = this.accesstokenSubject.asObservable();
 
@@ -21,6 +20,12 @@ export class AuthService {
 
   isLoadingSignUp$ = this.isLoadingSignUpSubject.asObservable();
   errorSignUp$ = this.errorSignUpSubject.asObservable();
+
+  private isLoadingLoginSubject = new BehaviorSubject<boolean>(false);
+  private errorLoginSubject = new BehaviorSubject<string | null>(null);
+
+  isLoadingLogin$ = this.isLoadingLoginSubject.asObservable();
+  errorLogin$ = this.errorLoginSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 

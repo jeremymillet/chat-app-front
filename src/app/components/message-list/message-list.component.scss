@@ -2,8 +2,25 @@
     width: 100%;
     height: 83vh;
     padding: 0px 20px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+    width: 8px; // Largeur de la scrollbar
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #5c5c5c18; // Couleur de fond de la scrollbar
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #1d1d1d; // Couleur de la barre de défilement
+        border-radius: 10px;
+    }
     .message-list{
         width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 }
 @media(min-height: 1000px){

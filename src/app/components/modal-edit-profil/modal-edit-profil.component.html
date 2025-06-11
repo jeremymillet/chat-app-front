@@ -1,0 +1,37 @@
+<nz-modal [(nzVisible)]="isVisible" nzTitle="" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+  <form nz-form [formGroup]="validateEditForm" class="sign-up-form" (ngSubmit)="submitForm()">
+  <nz-form-item>
+  <nz-form-control [nzValidateStatus]="validateEditForm.controls['username']"
+    [nzErrorTip]="">
+      <nz-input-group nzPrefixIcon="user">
+      <input type="text" nz-input formControlName="username" [value]="(user$ | async)?.username|| 'test'" />
+      </nz-input-group>
+  </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+  <nz-form-control [nzValidateStatus]="validateEditForm.controls['profilePicture']"
+    [nzErrorTip]="">
+      <nz-input-group >
+      <input type="file" nz-input formControlName="profilePicture" placeholder="photo" (change)="onFileChange($event)" />
+      </nz-input-group>
+  </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+  <nz-form-control [nzValidateStatus]="validateEditForm.controls['description']"
+    [nzErrorTip]="">
+      <nz-input-group>
+      <input type="text" nz-input formControlName="description" placeholder="description" [value]="(user$ | async)?.description|| ''" />
+      </nz-input-group>
+  </nz-form-control>
+  </nz-form-item>
+  <div nz-row class="edit-form-margin">
+  </div>
+  <button nz-button [disabled]="validateEditForm.invalid" class="edit-form-button edit-form-margin">edit</button>
+  <nz-spin *ngIf="isLoadingEdit$ | async"></nz-spin>
+  <div *ngIf="errorEdit$ | async as error" class="error-message">
+    {{ error }}
+  </div>
+</form>
+  </ng-container>
+</nz-modal>

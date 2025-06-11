@@ -18,8 +18,8 @@
     <div nz-row class="login-form-margin">
     </div>
     <button nz-button [disabled]="validateLoginForm.invalid" class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
-    <nz-spin *ngIf="isLoadingLogin"></nz-spin>
-    <div *ngIf="errorLogin as error" class="error-message">
+    <nz-spin *ngIf="isLoadingLogin$ | async"></nz-spin>
+    <div *ngIf="errorLogin$ | async as error" class="error-message">
       {{ error }}
     </div>
 </form>

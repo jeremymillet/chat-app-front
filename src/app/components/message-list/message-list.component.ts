@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, 
+  ViewChild, ElementRef, AfterViewChecked, 
+  AfterViewInit} from '@angular/core';
 import { MessageComponent } from '../message/message.component';
 import { Conversation, Friend, Message, User } from '../../types/types';
 import { catchError, combineLatest, Observable, of, Subscription, switchMap, tap } from 'rxjs';
@@ -13,13 +15,15 @@ import { WebSocketService } from '../../services/webSocketServices';
   templateUrl: './message-list.component.html',
   styleUrl: './message-list.component.scss'
 })
-export class MessageListComponent implements OnInit, OnChanges, OnDestroy {
+export class MessageListComponent implements OnInit, OnChanges, OnDestroy,AfterViewChecked,AfterViewInit {
   @Input() conversation!: Conversation | null;
   @Input() friend!: Friend | null;
   @Input() user!: User | null;
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef; // Référence à l'élément scrollable
   private messageSubscription: Subscription | null = null;
   private currentConversationId: number | null = null;
   private isInitialized = false;
+  
   token$!: Observable<string | null>;
   messageList: Message[] = [];
 
@@ -27,6 +31,7 @@ export class MessageListComponent implements OnInit, OnChanges, OnDestroy {
     private authServices: AuthService,
     private messageService: messagesService,
     private webSocketService: WebSocketService,
+     private cdr: ChangeDetectorRef
   ) {
     this.token$ = this.authServices.accessToken$;
   }
@@ -37,6 +42,7 @@ export class MessageListComponent implements OnInit, OnChanges, OnDestroy {
       this.messageList = [];
       this.getMessages();
       this.subscribeToMessages();
+      this.scrollToBottom();
     }
   }
 
@@ -49,6 +55,13 @@ export class MessageListComponent implements OnInit, OnChanges, OnDestroy {
         this.subscribeToMessages();
       }
     }
+  }
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 
   ngOnDestroy(): void {
@@ -65,6 +78,8 @@ export class MessageListComponent implements OnInit, OnChanges, OnDestroy {
       this.messageSubscription = this.webSocketService.getMessages().subscribe(message => {
         if (message) {
           this.messageList.push(message); // Ajouter le message reçu à la liste des messages
+          this.cdr.detectChanges(); // Déclenche un cycle de détection des changements
+          this.scrollToBottom()
         }
       });
     }
@@ -91,6 +106,7 @@ private unsubscribeFromMessages(): Promise<void> {
           this.messageService.getMessages(this.conversation.conversationId, token).subscribe({
             next: (messages) => {
               this.messageList = messages;
+              this.scrollToBottom();
             },
             error: (err) => {
               console.error('Erreur lors de la récupération des messages:', err);
@@ -100,5 +116,13 @@ private unsubscribeFromMessages(): Promise<void> {
       });
     }
   }
+  private scrollToBottom(): void {
+    try {
+      if (this.scrollContainer) {
+        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) {
+      console.error('Erreur de scroll:', err);
+    }
+  }
 }
-

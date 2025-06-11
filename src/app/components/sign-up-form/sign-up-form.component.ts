@@ -23,8 +23,10 @@ export class SignUpFormComponent {
   errorSignUp$!: Observable<string | null>;
   
   constructor(private fb: NonNullableFormBuilder, private formValidator: FormValidatorsService, private authService: AuthService,) {
+    
     this.isLoadingSignUp$ = this.authService.isLoadingSignUp$; // Initialisation après le constructeur
     this.errorSignUp$ = this.authService.errorSignUp$;
+
     this.validateSignUpForm = this.fb.group({
     username: this.fb.control('',[Validators.required,Validators.minLength(3)]),
     email: this.fb.control('', [Validators.required, Validators.email]),
