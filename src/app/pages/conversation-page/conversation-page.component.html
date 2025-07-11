@@ -1,5 +1,14 @@
 <div class="conversation-page-container">
-  <app-conversation-side-bar class="sidebar" [user$]="user$"></app-conversation-side-bar>
+  <app-conversation-side-bar
+  class="sidebar"
+  [user$]="user$"
+  (toggleSidebar)="toggleConversations()"
+  [ngClass]="{
+    'sidebar-expanded': !isConversationHidden,
+    'sidebar-collapsed': isConversationHidden
+  }"
+>
+</app-conversation-side-bar>
 
   <app-conversation
     class="conversation-part"

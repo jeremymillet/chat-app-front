@@ -17,6 +17,7 @@ import { WebSocketService } from '../../services/webSocketServices';
   styleUrl: './conversation-page.component.scss'
 })
 export class ConversationPageComponent { 
+  
   user$!: Observable<User | null>;
   token$!: Observable<string | null>
   friendshipId!: number; 
@@ -45,7 +46,11 @@ export class ConversationPageComponent {
       }
     });
   }
+  isConversationHidden = false; // ou true si tu veux qu'elle soit cachée par défaut
 
+  toggleConversations() {
+    this.isConversationHidden = !this.isConversationHidden;
+  }
   loadData(): void {
     // Souscrire à l'utilisateur et au token
     this.user$.subscribe((user) => {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MinProfileCardComponent } from '../min-profile-card/min-profile-card.component';
 import { Friend, User } from '../../types/types';
 import { Observable } from 'rxjs';
@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ConversationSideBarComponent implements OnInit{
   @Input() user$!: Observable<User | null>
+  @ViewChild('minProfileCard') minProfileCard!: ElementRef;
+  @Output() toggleSidebar = new EventEmitter<void>();
   token$!: Observable<string | null>
 
   friendsWithConversation : Friend[] = [];
@@ -42,6 +44,12 @@ export class ConversationSideBarComponent implements OnInit{
   }
   setFriendsWithConversation(friends: Friend[]) {
     this.friendsWithConversation = friends;
+  }
+
+  closeSidebar() {
+    document.getElementById('conversations')?.classList.toggle('hide-on-mobil');
+    document.getElementById('min-profil-card')?.classList.toggle('hide-on-mobil');
+    this.toggleSidebar.emit();
   }
 
   

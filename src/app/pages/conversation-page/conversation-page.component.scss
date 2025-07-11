@@ -7,7 +7,7 @@
     justify-content: center;
 }
 .sidebar{
-    width: 15%;
+    width: 20%;
     height: 100vh;
     background-color: #2b2d31;
 }
@@ -15,6 +15,7 @@
     width: 85%;
     height: 100vh;
 }
+
 .friend-card-info-container{
     width: 20%;
     height: 100vh;
@@ -77,4 +78,43 @@
             }
         }
     }
+
 }
+@media (max-width: 768px) {
+    .conversation-part{
+        width: 90%;
+        height: 100vh;
+    }
+    .hide-on-mobil{
+        display: none;
+    }
+    .friend-card-info-container{
+        display:none
+    }
+    .sidebar {
+        
+        transition: width 0.3s ease;
+      }
+      
+      .sidebar-expanded {
+        width: 50%; // ou 25%, ou ce que tu veux quand conversations est visible
+      }
+      
+      .sidebar-collapsed {
+        width: 10%; // ou moins, quand conversations est caché
+      }
+}
+
+@media (max-width: 500px) {
+    .sidebar-expanded ~ .conversation-part {
+      width: 20%;
+    }
+    .sidebar-expanded{
+        width: 80%;
+    }
+  
+    .conversation-part {
+      width: 90%;
+      height: 100vh;
+    }
+  }
